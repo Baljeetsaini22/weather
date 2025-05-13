@@ -1,0 +1,38 @@
+*{
+    margin: 0;
+}
+.container {
+    width: 100%;
+    height:auto
+}
+.content{
+    width: 50%;
+    height: auto;
+    margin: 100px auto;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 30px 20px;
+    background-color:skyblue;
+}
+.clud{
+    color: #fff;
+}
+.placese {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 50px;
+}
+.in_put{
+    width: 30%;
+    display: flex;
+    justify-content: space-between;
+}
+.details{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
