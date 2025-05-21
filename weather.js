@@ -5,7 +5,7 @@ const loactBtn = document.querySelector('#btn');
 
 const apiKey = `YrW4QHsg4Wg77RIaC6EQZflpSqYurcpN`;
 // const apiKey = 'vSjon1sAZhGJlPxjpbqFQK24RSGWsMYe';
-let locat = '';
+let locat = "";
 
 
 loactBtn.addEventListener('click', function(e){
@@ -15,7 +15,7 @@ loactBtn.addEventListener('click', function(e){
 
   if (locat) {
     data(); 
-    // userInput.value = ' ';
+    userInput.value = '';
   } else {
     alert("Please enter a location.");
   }
@@ -34,15 +34,14 @@ async function data() {
   const locationTo = document.querySelector('.location_of');
   locationTo.innerHTML = dataFetch?.location?.name
 
-
-  
+ 
   const degre = document.createElement('h3');
   const sunRise = document.createElement('p')
   temperature.appendChild(degre);
   temperature.appendChild(sunRise)
   const temp = dataFetch.timelines.daily[0];
-  degre.innerHTML = temp.values.temperatureAvg;
-  sunRise.innerHTML = temp.values.sunriseTime;
+  degre.innerHTML = `Temperature = ${temp.values.temperatureAvg}`;
+  sunRise.innerHTML = `Sunrise = ${temp.values.sunriseTime}`;
   
 
   const speed = document.createElement('h4');
@@ -50,6 +49,6 @@ async function data() {
   wind.appendChild(speed)
   wind.appendChild(sunSet)
   const winSpd = dataFetch.timelines.daily[0];
-  speed.innerHTML = winSpd.values.windSpeedAvg;   
-  sunSet.innerHTML = winSpd.values.sunsetTime;   
+  speed.innerHTML = `Wind Speed = ${winSpd.values.windSpeedAvg}`;   
+  sunSet.innerHTML = `Sunset = ${winSpd.values.sunsetTime}`;   
 }
