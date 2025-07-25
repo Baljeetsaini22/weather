@@ -1,54 +1,49 @@
-const temperature = document.querySelector('.temperature');
-const userInput = document.querySelector('#loact');
-const wind = document.querySelector('.sun');
-const loactBtn = document.querySelector('#btn');
+// const url = `https://raw.githubusercontent.com/Baljeetsaini22/api/refs/heads/main/profile.json`;
 
-const apiKey = `YrW4QHsg4Wg77RIaC6EQZflpSqYurcpN`;
-// const apiKey = 'vSjon1sAZhGJlPxjpbqFQK24RSGWsMYe';
-let locat = "";
+const temperature = document.querySelector(".temperature");
+const userInput = document.querySelector("#loact");
+const wind = document.querySelector(".sun");
+const loactBtn = document.querySelector("#btn");
+const locationTo = document.querySelector(".location_of");
 
+const apiKey = "YrW4QHsg4Wg77RIaC6EQZflpSqYurcpN";
 
-loactBtn.addEventListener('click', function(e){
-  e.preventDefault()
-  locat = userInput.value;
-  console.log(locat);
+loactBtn.addEventListener("click", async (e) => {
+  e.preventDefault();
+  const locat = userInput.value.trim();
+  if (!locat) return alert("Please enter a location.");
+  userInput.value = "";
 
-  if (locat) {
-    data(); 
-    userInput.value = '';
-  } else {
-    alert("Please enter a location.");
+  try {
+    const url = `https://api.tomorrow.io/v4/weather/forecast?location=${locat}&apikey=${apiKey}`;
+    const response = await fetch(url);
+    const data = await response.json();
+
+    temperature.innerHTML = "";
+    wind.innerHTML = "";
+    locationTo.textContent = data?.location?.name || "Location not found";
+
+    const temp = data.timelines.daily[0];
+
+    temperature.innerHTML = `
+      <h3 class="text-lg font-bold">Temperature: ${
+        temp.values.temperatureAvg
+      }°C</h3>
+      <p class="text-sm">Sunrise: ${new Date(
+        temp.values.sunriseTime
+      ).toLocaleTimeString()}</p>
+    `;
+
+    wind.innerHTML = `
+      <h4 class="text-lg font-bold">Wind Speed: ${
+        temp.values.windSpeedAvg
+      } km/h</h4>
+      <p class="text-sm">Sunset: ${new Date(
+        temp.values.sunsetTime
+      ).toLocaleTimeString()}</p>
+    `;
+  } catch (error) {
+    console.error("Fetch error:", error);
+    alert("Unable to fetch weather data.");
   }
 });
-
-async function data() { 
-  // const url = `https://raw.githubusercontent.com/Baljeetsaini22/api/refs/heads/main/profile.json`;
-  const url = `https://api.tomorrow.io/v4/weather/forecast?location=${locat}&apikey=${apiKey}`;
-  
-  const data = await fetch(url);
-  const dataFetch = await data.json(); 
-  
-  temperature.innerHTML = '';
-  wind.innerHTML = '';
-
-  const locationTo = document.querySelector('.location_of');
-  locationTo.innerHTML = dataFetch?.location?.name
-
- 
-  const degre = document.createElement('h3');
-  const sunRise = document.createElement('p')
-  temperature.appendChild(degre);
-  temperature.appendChild(sunRise)
-  const temp = dataFetch.timelines.daily[0];
-  degre.innerHTML = `Temperature = ${temp.values.temperatureAvg}`;
-  sunRise.innerHTML = `Sunrise = ${temp.values.sunriseTime}`;
-  
-
-  const speed = document.createElement('h4');
-  const sunSet = document.createElement('p')
-  wind.appendChild(speed)
-  wind.appendChild(sunSet)
-  const winSpd = dataFetch.timelines.daily[0];
-  speed.innerHTML = `Wind Speed = ${winSpd.values.windSpeedAvg}`;   
-  sunSet.innerHTML = `Sunset = ${winSpd.values.sunsetTime}`;   
-}
